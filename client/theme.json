@@ -1,0 +1,31 @@
+
+        {
+            "@labels": {
+                "normal_text_color": "#FFFFFF",
+                "text_horiz_alignment": "center"
+            },
+            "@buttons": {
+                "normal_text_color": "#FFFFFF",
+                "hovered_text_color": "#FFFFFF",
+                "pressed_text_color": "#FFFFFF",
+                "disabled_text_color": "#CCCCCC"
+            },
+            "@text_entry_lines": {
+                "normal_text_color": "#000000",
+                "focused_text_color": "#000000",
+                "disabled_text_color": "#666666"
+            },
+            "#name_label": {
+                "normal_text_color": "#FFFFFF"
+            },
+            "#server_label": {
+                "normal_text_color": "#FFFFFF"
+            },
+            "#current_card_label": {
+                "normal_text_color": "#FFFFFF"
+            },
+            "#opponent_label": {
+                "normal_text_color": "#FFFFFF"
+            }
+        }
+        

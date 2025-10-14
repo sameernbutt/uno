@@ -1,0 +1,49 @@
+Server Instance Name: Uno Server
+
+to access go to AWS -> EC2 -> Instances
+
+Public IP: 3.149.254.103
+18.223.107.88
+18.227.183.151
+
+To initialize server:
+ssh -i "uno-key.pem" ubuntu@PUBLICIP
+
+Upload server code:
+scp -i "uno-key.pem" uno_game/server/uno_server.py ubuntu@PUBLICIP:/home/ubuntu/
+
+^^NOTE: RUN THIS LINE IN A NORMAL TERMINAL IN "Uno Custom". DO NOT RUN IT IN THE BASH TERMINAL CREATED BY CONNECTING TO THE INSTANCE.
+
+
+Server is running in EC2. Make sure to stop the instance state after you're done using the server.
+
+
+
+This line reduces the tcp timeout to 10 seconds (or just replace the 10 with whatever):
+sudo sysctl -w net.ipv4.tcp_fin_timeout=10
+
+Allow for socket reuse while in wait state(0 for false, 1 for true):
+sudo sysctl -w net.ipv4.tcp_tw_reuse=1 =
+
+
+
+
+
+
+
+
+
+
+card distribution code:
+# Make deck of cards
+def create_deck():
+    deck = []
+    for color in COLORS:
+        for value in VALUES:
+            deck.append(f"{color} {value}")
+            if value != '0':
+                deck.append(f"{color} {value}")
+    for i in range(4):
+        deck.append("Wild")
+        deck.append("Draw Four")
+    return deck

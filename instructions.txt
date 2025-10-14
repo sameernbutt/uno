@@ -1,0 +1,31 @@
+1. Open the folder/directory where uno_custom.zip is (don't actually open uno_custom.zip though).
+
+2. Right-click (or Control + Click) inside the folder.
+
+3. Select "New Terminal at Folder". The terminal should open.
+
+4. Copy and paste each line one at a time into the terminal, and press enter to run:
+
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+
+eval "$(/opt/homebrew/bin/brew shellenv)"  # Ensure Homebrew is active
+
+brew install python
+
+unzip uno_custom.zip -d uno_custom
+
+cd uno_project
+
+python3 -m ensurepip --default-pip  # Ensure pip is available
+
+pip3 install -r requirements.txt
+
+pip3 install pyinstaller
+
+pyinstaller --windowed --name="UnoGame" --add-data="cards:cards" --add-data="sounds:sounds" uno_gui.py
+
+3. Locate the app in the folder titled "dist".
+
+4. Open it to play.
+
+5. You can move the app to your desired location now. You can delete all the other files if you want.
