@@ -151,9 +151,13 @@ class UnoGUI:
         self.server_ip = self.server_input.get_text()
         self.player_name = self.name_input.get_text()
         
+        # if not self.server_ip:
+        #     self.show_message("Error", "Please enter a server IP")
+        #     return
+
+        # assuming the aws server doesn't reset, just use this ip. If it does, make sure to update or just omit this and go back to the old way
         if not self.server_ip:
-            self.show_message("Error", "Please enter a server IP")
-            return
+            self.server_ip = "3.131.38.246"
         
         if not self.player_name:
             self.show_message("Error", "Please enter your name")
