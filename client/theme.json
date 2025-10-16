@@ -1,31 +1,126 @@
 
-        {
-            "@labels": {
-                "normal_text_color": "#FFFFFF",
-                "text_horiz_alignment": "center"
-            },
-            "@buttons": {
-                "normal_text_color": "#FFFFFF",
-                "hovered_text_color": "#FFFFFF",
-                "pressed_text_color": "#FFFFFF",
-                "disabled_text_color": "#CCCCCC"
-            },
-            "@text_entry_lines": {
-                "normal_text_color": "#000000",
-                "focused_text_color": "#000000",
-                "disabled_text_color": "#666666"
-            },
-            "#name_label": {
-                "normal_text_color": "#FFFFFF"
-            },
-            "#server_label": {
-                "normal_text_color": "#FFFFFF"
-            },
-            "#current_card_label": {
-                "normal_text_color": "#FFFFFF"
-            },
-            "#opponent_label": {
-                "normal_text_color": "#FFFFFF"
-            }
+{
+    "defaults": {
+        "colours": {
+            "normal_bg": "#2E86AB",
+            "hovered_bg": "#1F5F7A",
+            "pressed_bg": "#144A5E",
+            "disabled_bg": "#666666",
+            "normal_text": "#FFFFFF",
+            "hovered_text": "#FFFFFF",
+            "pressed_text": "#FFFFFF",
+            "disabled_text": "#CCCCCC"
+        },
+        "misc": {
+            "border_width": "2",
+            "shadow_width": "0"
         }
+    },
+    "@labels": {
+        "colours": {
+            "normal_text": "#FFFFFF"
+        },
+        "misc": {
+            "text_horiz_alignment": "center"
+        }
+    },
+    "@buttons": {
+        "colours": {
+            "normal_bg": "#2E86AB",
+            "hovered_bg": "#1F5F7A",
+            "pressed_bg": "#144A5E",
+            "disabled_bg": "#666666",
+            "normal_text": "#FFFFFF",
+            "hovered_text": "#FFFFFF",
+            "pressed_text": "#FFFFFF",
+            "disabled_text": "#CCCCCC",
+            "normal_border": "#ffffff",
+            "hovered_border": "#144A5E",
+            "pressed_border": "#0D3A4A"
+        },
+        "misc": {
+            "border_width": "2"
+        }
+    },
+    "@text_entry_lines": {
+        "colours": {
+            "normal_bg": "#FFFFFF",
+            "hovered_bg": "#F0F8FF",
+            "focused_bg": "#E6F3FF",
+            "disabled_bg": "#CCCCCC",
+            "normal_text": "#FFFFFF",
+            "focused_text": "#000000",
+            "disabled_text": "#666666",
+            "normal_border": "#2E86AB",
+            "hovered_border": "#1F5F7A",
+            "focused_border": "#144A5E"
+        },
+        "misc": {
+            "border_width": "2"
+        }
+    },
+    "#name_label": {
+        "colours": {
+            "normal_text": "#FFFFFF"
+        }
+    },
+    "#server_label": {
+        "colours": {
+            "normal_text": "#FFFFFF"
+        }
+    },
+    "#current_card_label": {
+        "colours": {
+            "normal_text": "#FFFFFF"
+        }
+    },
+    "#opponent_label": {
+        "colours": {
+            "normal_text": "#FFFFFF"
+        }
+    },
+    "#welcome_label": {
+        "colours": {
+            "normal_text": "#FFFFFF"
+        }
+    },
+    "#connect_button": {
+        "colours": {
+            "normal_bg": "#000000",
+            "hovered_bg": "#1F5F7A",
+            "pressed_bg": "#144A5E",
+            "normal_text": "#FFFFFF",
+            "hovered_text": "#FFFFFF",
+            "pressed_text": "#FFFFFF"
+        }
+    },
+    "#draw_button": {
+        "colours": {
+            "normal_bg": "#000000",
+            "hovered_bg": "#1F5F7A",
+            "pressed_bg": "#144A5E",
+            "normal_text": "#FFFFFF",
+            "hovered_text": "#FFFFFF",
+            "pressed_text": "#FFFFFF"
+        }
+    },
+    "#name_input": {
+        "colours": {
+            "normal_bg": "#FFFFFF",
+            "hovered_bg": "#F0F8FF",
+            "focused_bg": "#E6F3FF",
+            "normal_text": "#FFFFFF",
+            "focused_text": "#000000"
+        }
+    },
+    "#server_input": {
+        "colours": {
+            "normal_bg": "#FFFFFF",
+            "hovered_bg": "#F0F8FF",
+            "focused_bg": "#E6F3FF",
+            "normal_text": "#FFFFFF",
+            "focused_text": "#000000"
+        }
+    }
+}
         
