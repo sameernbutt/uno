@@ -229,7 +229,10 @@ class UnoGUI:
             self.opponent_cards_label.show()
             self.draw_button.show()
             
-            self.show_message("Connected", f"Connected as {self.player_name}")
+            if self.player_name in {"T", "t", "Tehreem", "tehreem"}:
+                self.show_message("Connected", f"Get ready to lose babe lmaoo")
+            else:
+                self.show_message("Connected", f"Connected as {self.player_name}")
         except Exception as e:
             self.show_message("Error", f"Could not connect: {str(e)}")
     
