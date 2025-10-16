@@ -25,7 +25,7 @@ class UnoGUI:
         self.screen = pygame.display.set_mode((self.screen_width, self.screen_height), pygame.RESIZABLE)
         
         # UI Manager
-        self.manager = pygame_gui.UIManager((self.screen_width, self.screen_height), 'theme.json')
+        self.manager = pygame_gui.UIManager((self.screen_width, self.screen_height), 'theme.json', enable_live_theme_updates=True)
         
         # Colors
         self.BLUE = (46, 134, 193)
@@ -41,6 +41,10 @@ class UnoGUI:
         self.connected = False
         self.card_rects = []  # To track card positions for clicking
         
+        # Load logo image
+        self.logo_image = None
+        self.load_logo()
+        
         # UI Elements
         self.create_ui_elements()
         
@@ -55,39 +59,45 @@ class UnoGUI:
         self.clock = pygame.time.Clock()
     
     def create_ui_elements(self):
+
         # Calculate center positions
         center_x = self.screen_width // 2
         
-        # Name input
+        # Name input (moved down to make room for logo)
         self.name_label = pygame_gui.elements.UILabel(
-            relative_rect=pygame.Rect(center_x - 250, 20, 100, 30),
+            relative_rect=pygame.Rect(center_x - 200, 180, 100, 30),
             text="Name:",
             manager=self.manager,
             object_id=pygame_gui.core.ObjectID(class_id="@labels", object_id="#name_label")
         )
         self.name_input = pygame_gui.elements.UITextEntryLine(
-            relative_rect=pygame.Rect(center_x - 140, 20, 200, 30),
-            manager=self.manager
+            relative_rect=pygame.Rect(center_x - 90, 180, 200, 30),
+            manager=self.manager,
+            object_id=pygame_gui.core.ObjectID(class_id="@text_entry_lines", object_id="#name_input")
         )
         
         # Server IP input
         self.server_label = pygame_gui.elements.UILabel(
-            relative_rect=pygame.Rect(center_x - 250, 60, 100, 30),
+            relative_rect=pygame.Rect(center_x - 200, 220, 100, 30),
             text="Server IP:",
             manager=self.manager,
             object_id=pygame_gui.core.ObjectID(class_id="@labels", object_id="#server_label")
         )
         self.server_input = pygame_gui.elements.UITextEntryLine(
-            relative_rect=pygame.Rect(center_x - 140, 60, 200, 30),
-            manager=self.manager
+            relative_rect=pygame.Rect(center_x - 90, 220, 200, 30),
+            manager=self.manager,
+            object_id=pygame_gui.core.ObjectID(class_id="@text_entry_lines", object_id="#server_input")
         )
         
-        # Connect button
+        # Connect button (moved below input boxes)
         self.connect_button = pygame_gui.elements.UIButton(
-            relative_rect=pygame.Rect(center_x + 70, 60, 100, 30),
+            relative_rect=pygame.Rect(center_x - 50, 290, 100, 30),
             text="Connect",
-            manager=self.manager
+            manager=self.manager,
+            object_id=pygame_gui.core.ObjectID(class_id="@buttons", object_id="#connect_button")
         )
+
+        
         
         # Current card display (centered, moved up)
         self.current_card_label = pygame_gui.elements.UILabel(
@@ -109,8 +119,23 @@ class UnoGUI:
         self.draw_button = pygame_gui.elements.UIButton(
             relative_rect=pygame.Rect(center_x - 75, 320, 150, 40),
             text="Draw Card",
-            manager=self.manager
+            manager=self.manager,
+            object_id=pygame_gui.core.ObjectID(class_id="@buttons", object_id="#draw_button")
         )
+        
+        # Welcome text (positioned between logo and inputs)
+        self.welcome_label = pygame_gui.elements.UILabel(
+            relative_rect=pygame.Rect(center_x - 200, 120, 400, 30),
+            text="Welcome! Please enter your name and server IP.",
+            manager=self.manager,
+            object_id=pygame_gui.core.ObjectID(class_id="@labels", object_id="#welcome_label")
+        )
+
+
+        self.draw_button.hide()  # Hide draw button until in game
+        self.current_card_label.hide()    # Hide until in game
+        self.opponent_cards_label.hide()  # Hide until in game
+
     
     def load_card_images(self):
         card_images = {}
@@ -147,6 +172,30 @@ class UnoGUI:
         
         return card_images
     
+    def load_logo(self):
+        """Load the logo image"""
+        logo_path = resource_path("resources/image.png")
+        try:
+            if os.path.exists(logo_path):
+                self.logo_image = pygame.image.load(logo_path).convert_alpha()
+                # Scale logo to fit within a 200x100 frame, maintaining aspect ratio
+                max_width, max_height = 200, 100
+                logo_width = min(max_width, self.logo_image.get_width())
+                logo_height = int(self.logo_image.get_height() * (logo_width / self.logo_image.get_width()))
+                
+                # If height is too big, scale by height instead
+                if logo_height > max_height:
+                    logo_height = max_height
+                    logo_width = int(self.logo_image.get_width() * (logo_height / self.logo_image.get_height()))
+                
+                self.logo_image = pygame.transform.scale(self.logo_image, (logo_width, logo_height))
+            else:
+                print(f"Logo not found at {logo_path}")
+                self.logo_image = None
+        except Exception as e:
+            print(f"Error loading logo: {e}")
+            self.logo_image = None
+    
     def connect_to_server(self):
         self.server_ip = self.server_input.get_text()
         self.player_name = self.name_input.get_text()
@@ -162,11 +211,24 @@ class UnoGUI:
         if not self.player_name:
             self.show_message("Error", "Please enter your name")
             return
-        
         try:
             self.client = start_client(self.server_ip, self)
             self.client.send(f"name:{self.player_name}".encode('utf-8'))
             self.connected = True
+            
+            # Hide login elements and show game elements
+            self.welcome_label.hide()
+            self.name_label.hide()
+            self.name_input.hide()
+            self.server_label.hide()
+            self.server_input.hide()
+            self.connect_button.hide()
+            
+            # Show game elements
+            self.current_card_label.show()
+            self.opponent_cards_label.show()
+            self.draw_button.show()
+            
             self.show_message("Connected", f"Connected as {self.player_name}")
         except Exception as e:
             self.show_message("Error", f"Could not connect: {str(e)}")
@@ -207,6 +269,17 @@ class UnoGUI:
     
     def draw_game(self):
         self.screen.fill(self.BLUE)
+        
+        # Draw logo if not connected (login screen)
+        if not self.connected and self.logo_image:
+            # Create a frame for the logo (200x100 rectangle)
+            frame_rect = pygame.Rect(self.screen_width//2 - 100, 20, 200, 100)
+            # pygame.draw.rect(self.screen, self.WHITE, frame_rect, 2)  # White border
+            
+            # Center the logo within the frame
+            logo_rect = self.logo_image.get_rect(center=frame_rect.center)
+            self.screen.blit(self.logo_image, logo_rect)
+        
         self.manager.draw_ui(self.screen)
         
         # Draw current card
@@ -275,14 +348,15 @@ class UnoGUI:
         # Re-center all UI elements
         center_x = self.screen_width // 2
         
-        self.name_label.set_position((center_x - 250, 20))
-        self.name_input.set_position((center_x - 140, 20))
-        self.server_label.set_position((center_x - 250, 60))
-        self.server_input.set_position((center_x - 140, 60))
-        self.connect_button.set_position((center_x + 70, 60))
+        self.name_label.set_position((center_x - 200, 180))
+        self.name_input.set_position((center_x - 90, 180))
+        self.server_label.set_position((center_x - 200, 220))
+        self.server_input.set_position((center_x - 90, 220))
+        self.connect_button.set_position((center_x - 50, 260))
         self.current_card_label.set_position((center_x - 100, 100))
         self.opponent_cards_label.set_position((center_x - 150, 280))
         self.draw_button.set_position((center_x - 75, 320))
+        self.welcome_label.set_position((center_x - 200, 120))
     
     def run(self):
         running = True
@@ -319,39 +393,5 @@ class UnoGUI:
         pygame.quit()
 
 if __name__ == "__main__":
-    # Create a theme.json file for white text
-    with open('theme.json', 'w') as f:
-        f.write('''
-        {
-            "@labels": {
-                "normal_text_color": "#FFFFFF",
-                "text_horiz_alignment": "center"
-            },
-            "@buttons": {
-                "normal_text_color": "#FFFFFF",
-                "hovered_text_color": "#FFFFFF",
-                "pressed_text_color": "#FFFFFF",
-                "disabled_text_color": "#CCCCCC"
-            },
-            "@text_entry_lines": {
-                "normal_text_color": "#000000",
-                "focused_text_color": "#000000",
-                "disabled_text_color": "#666666"
-            },
-            "#name_label": {
-                "normal_text_color": "#FFFFFF"
-            },
-            "#server_label": {
-                "normal_text_color": "#FFFFFF"
-            },
-            "#current_card_label": {
-                "normal_text_color": "#FFFFFF"
-            },
-            "#opponent_label": {
-                "normal_text_color": "#FFFFFF"
-            }
-        }
-        ''')
-    
     game = UnoGUI()
     game.run()
