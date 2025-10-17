@@ -10,6 +10,9 @@ This program can be played online. However, you need to start a server through s
 3. Afterwards navigate to the directory where gui.py is located and run it using: python gui.py
 4. Don't forget to stop the server when you're done if you don't want to use more hours than you have to!
 
+### To Play
+run start.command (assuming it has executable permissions)
+
 ### Some More Words
 Thanks so much for taking a look at this and reading it! Hopefully this provides a creative base or inspiration for you to make your own Uno implementation (or even another game!). And if you do download this to play, I hope you enjoy!
 
